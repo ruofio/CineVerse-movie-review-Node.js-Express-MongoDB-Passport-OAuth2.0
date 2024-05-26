@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Movie</title>
+    <!-- Bootstrap and Font Awesome Imports -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-Qg8rSU7/C2vJsbwNY+/GfpCuW/vFQ9sk9xX6w+x7+lAOSN6x4hHVxQHkYvD+nx5e" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 text-center">
+                <h2 class="mt-4" style="color: white;">Can't Decide What to Watch for Movie Night? Let Us Choose for
+                    You! 🍿</h2>
+                <!-- Dropdown menu to choose a genre -->
+                <div class="select">
+                    <select id="genre-select" class="form-select mt-3" style="max-width: 200px;">
+                        <option value="Any">Any Genre</option>
+                        <option value="Action">Action</option>
+                        <option value="Animation">Animation</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Crime">Crime</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Family">Family</option>
+                        <option value="Comedy">Comedy</option>
+                    </select>
+                </div>
+                <button id="surprise-btn" class="btn btn-primary mt-3">Surprise Me!</button>
+
+                <div id="movie-container" class="mt-5 hidden">
+                    <!-- Movie content will be added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createFallingStar() {
+            const star = document.createElement("div");
+            star.classList.add("falling-star");
+
+            const randomDelay = Math.random() * 1.5; // Random delay before falling (up to 1.5 seconds)
+            const randomSpeed = (Math.random() * 2 + 2).toFixed(2) + "s"; // Random animation duration between 5 and 7 seconds
+            const randomSize = Math.random() * 10 + 15; // Random star size between 15 and 25
+            const randomLeft = Math.random() * 100 + "vw"; // Random horizontal position
+
+            star.style.left = randomLeft; // Set random horizontal position
+            star.style.animationDuration = randomSpeed; // Set random speed
+            star.style.animationDelay = randomDelay + "s"; // Set random delay
+            star.style.fontSize = randomSize + "px"; // Set random size
+
+            const colors = ["gray", "white"]; // Star colors
+            star.style.color = colors[Math.floor(Math.random() * colors.length)]; // Random color
+
+            star.textContent = "★";
+            return star;
+        }
+
+        function triggerStarfall() {
+            const numberOfStars = 55; // Create 55 falling stars
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = createFallingStar(); // Create a random star
+                document.body.appendChild(star); // Add the star to the document
+
+                // Remove star after it's done falling
+                setTimeout(() => star.remove(), (parseFloat(star.style.animationDuration) + parseFloat(star.style.animationDelay) + 1) * 1000);
+            }
+        }
+
+
+        function generateRandomMovie() {
+            // Trigger the starfall effect
+            triggerStarfall();
+
+            const movieContainer = document.getElementById("movie-container");
+            movieContainer.innerHTML = ""; // Clear existing content
+
+            const selectedGenre = document.getElementById("genre-select").value; // Get the selected genre
+            let url = "/random-movies"; // Base URL for random movie retrieval
+
+            if (selectedGenre !== "Any") {
+                // If a specific genre is selected, add it as a query parameter
+                url += `?genre=${encodeURIComponent(selectedGenre)}`;
+            }
+
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.title) {
+                        const movieCard = createMovieCard(data);
+                        movieContainer.appendChild(movieCard); // Add the movie card
+                    } else {
+                        movieContainer.textContent = data.message || "No movies found.";
+                    }
+                    movieContainer.classList.remove("hidden"); // Show the movie card
+                })
+                .catch((error) => console.error("Error fetching random movie:", error));
+        }
+
+        function createMovieCard(data) {
+            const movieCard = document.createElement("div");
+            movieCard.classList.add("movie-card");
+
+            const cardContainer = document.createElement("div");
+            cardContainer.classList.add("card", "p-3", "text-center");
+
+            const posterLink = document.createElement("a");
+            posterLink.href = `/movie/${data.id}`;
+
+            const posterImg = document.createElement("img");
+            posterImg.src = data.thumbnailImage;
+            posterImg.alt = data.title;
+            posterImg.classList.add("card-img-top");
+
+            posterLink.appendChild(posterImg);
+            cardContainer.appendChild(posterLink);
+
+            const cardBody = document.createElement("div");
+            cardBody.classList.add("card-body", "text-center", "d-flex", "flex-column", "justify-content-center", "align-items-center");
+
+            const title = document.createElement("h5");
+            title.textContent = data.title;
+            title.classList.add("fw-bold");
+
+            const starRatingDiv = document.createElement("div");
+            starRatingDiv.classList.add("d-flex", "justify-content-center", "align-items-center");
+
+            const starIcon = document.createElement("i");
+            starIcon.classList.add("fas", "fa-star");
+            starIcon.style.color = "orange"; // Star color
+
+            const ratingText = document.createElement("span");
+            ratingText.textContent = `IMDb RATING: ${data.rating.toFixed(1)}/10`;
+            ratingText.style.color = "white";
+
+            starRatingDiv.appendChild(starIcon); // Star icon
+            starRatingDiv.appendChild(ratingText); // Rating text
+
+            cardBody.appendChild(title); // Add title
+            cardBody.appendChild(starRatingDiv); // Add star rating
+
+            cardContainer.appendChild(cardBody); // Add card body to container
+
+            movieCard.appendChild(cardContainer); // Append card container to movie card
+
+            return movieCard; // Return the movie card component
+        }
+
+        document.getElementById("surprise-btn").addEventListener("click", generateRandomMovie);
+    </script>
+</body>
+
+</html>
