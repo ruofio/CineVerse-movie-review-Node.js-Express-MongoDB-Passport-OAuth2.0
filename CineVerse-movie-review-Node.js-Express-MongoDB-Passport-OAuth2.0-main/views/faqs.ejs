@@ -1,0 +1,140 @@
+<body>
+    <div id="faqContainer" class="container3Faq">
+        <div class="faq">
+            <h1>Frequently Asked Questions</h1>
+            <div id="searchResults" style="text-align: left; font-weight: bold;"></div>
+            <details>
+                <summary>What is CineVerse?</summary>
+                <div>
+                    Personalized movie rating platform designed to help you keep track of and rate the movies you've
+                    watched
+                </div>
+            </details>
+            <details>
+                <summary>How do I sign up?</summary>
+                <div>
+                    Signing up for CineVerse is easy! Simply click on the "Sign up" button on the homepage, and follow
+                    the prompts to connect your Google account. Once connected, you can start rating and reviewing
+                    movies right away.
+                </div>
+            </details>
+
+            <details>
+                <summary>Is it free to use?</summary>
+                <div>
+                    Yes, CineVerse is completely free to use. There are no subscription fees or hidden charges. Our goal
+                    is to provide an accessible platform for movie lovers to share their thoughts and recommendations.
+                </div>
+            </details>
+
+            <details>
+                <summary>Can I add new movies?</summary>
+                <div>
+                    Yes, you can add any movie that you want to add just click on the "Add new movie" button and write
+                    the movie information and your rate.
+                </div>
+            </details>
+
+            <details>
+                <summary>How does the random movie selector work?</summary>
+                <div>
+                    Our random movie selector allows you to choose a genre, and it will suggest a random movie from our
+                    database within that genre.
+                </div>
+            </details>
+
+            <details>
+                <summary>Can I choose multiple genres for a random movie suggestion?</summary>
+                <div>
+                    Currently, the feature only allows you to select one genre at a time. You can, however, use it
+                    multiple times to explore different genres.
+                </div>
+            </details>
+
+            <details>
+                <summary>What if I don't like the movie that was suggested?</summary>
+                <div>
+                    If the suggestion doesn't suit your taste, you can use the selector again to get another random
+                    movie from the same or a different genre.
+                </div>
+            </details>
+
+            <details>
+                <summary>Are the suggested movies suitable for all ages?</summary>
+                <div>
+                    Our system may include movies with various ratings. Please check the movie details for
+                    age-appropriate content and ratings.
+                </div>
+            </details>
+
+            <details>
+                <summary>Do you offer information about the suggested movie, such as cast, synopsis, or reviews?
+                </summary>
+                <div>
+                    Yes, after the selector choose a random movie it will automatically show the IMDb rating about this
+                    movie.
+                </div>
+            </details>
+
+        </div>
+
+        <div class="image">
+            <img src="/images/FAQs2.svg" style="width: 550px" />
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.querySelector('input[type="search"]');
+            const details = document.querySelectorAll('details');
+            const searchResults = document.getElementById('searchResults');
+
+            searchInput.addEventListener('input', function (event) {
+                const searchTerm = event.target.value.trim().toLowerCase();
+                let found = false; // Variable to track if any FAQ is found
+
+                details.forEach(detail => {
+                    const summaryText = detail.querySelector('summary').innerText.toLowerCase();
+                    const contentText = detail.querySelector('div').innerText.toLowerCase();
+                    if (summaryText.includes(searchTerm) || contentText.includes(searchTerm)) {
+                        detail.removeAttribute('hidden');
+                        found = true; // FAQ found
+                    } else {
+                        detail.setAttribute('hidden', true);
+                    }
+                });
+
+                if (!found && searchTerm !== '') {
+                    // If no FAQ is found and search term is not empty, display the message
+                    searchResults.textContent = 'No Frequently Asked Question found';
+                } else {
+                    // If FAQ(s) are found or search term is empty, remove any existing message
+                    searchResults.textContent = '';
+                }
+            });
+        });
+
+
+    </script>
+
+    <script>
+        const faqContainer = document.getElementById('faqContainer');
+        const footer = document.querySelector('footer');
+
+        // Function to adjust the height of faqContainer based on FAQs visibility
+        function adjustPageHeight() {
+            const faqsHeight = document.querySelector('.faq').offsetHeight;
+            faqContainer.style.height = faqsHeight + 'px';
+        }
+
+        // Initially adjust the page height
+        adjustPageHeight();
+
+        // Add event listener to details elements to adjust page height when toggled
+        const detailsElements = document.querySelectorAll('details');
+        detailsElements.forEach((details) => {
+            details.addEventListener('toggle', () => {
+                adjustPageHeight();
+            });
+        });
+    </script>
+</body>

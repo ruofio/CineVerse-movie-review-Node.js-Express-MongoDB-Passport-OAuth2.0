@@ -1,0 +1,39 @@
+<body>
+    <div class="container">
+        <h1>Add a new movie</h1>
+        <p><a class="btn btn-outline-light me-2" href="/dashboard">Back</a></p>
+
+        <fieldset>
+            <form action="/add" method="post">
+                <div class="form-group mb-3">
+                    <input type="text" name="title" class="form-control" placeholder="Enter the title of the movie"
+                        required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="text" name="director" class="form-control" placeholder="Enter the director's name"
+                        required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="text" name="genre" class="form-control" placeholder="Enter the genre" required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="number" name="releaseYear" class="form-control"
+                        placeholder="Enter the year the movie was released" min="1900" max="2030" required>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="number" name="rating" class="form-control" placeholder="Enter a rating between 1 and 5"
+                        min="1" max="5" required>
+                </div>
+                <div class="form-group mb-3">
+                    <textarea name="review" class="form-control" placeholder="Enter a short review" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <input type="text" name="thumbnailImage" class="form-control"
+                        placeholder="Paste a URL for a thumbnail image" required>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Add movie">
+            </form>
+            <br>
+        </fieldset>
+    </div>
+</body>

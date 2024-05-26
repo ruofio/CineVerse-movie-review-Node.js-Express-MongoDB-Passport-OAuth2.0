@@ -1,0 +1,64 @@
+<body>
+    <div class="container">
+        <h1>
+            <%= title %>
+        </h1>
+        <p><a class="btn btn-outline-light me-2" href="/dashboard">Back</a></p>
+        <div class="row">
+            <div class="card">
+                <img src="<%= thumbnailImage %>" style="height: 300px">
+                <div>
+                    <p class="card-text"><strong>Director: </strong>
+                        <%= director %>
+                    </p>
+                    <p class="card-text"><strong>Genre: </strong>
+                        <%= genre %>
+                    </p>
+                    <p class="card-text"><strong>Year released: </strong>
+                        <%= releaseYear %>
+                    </p>
+                    <p class="card-text"><strong>Review:</strong>
+                        <% for(var i=0; i < rating; i++){ %>
+                            <img src="/images/star.png" style="height: 20px;">
+                            <% } %>
+                    </p>
+                    <p class="card-text">
+                        <%= review %>
+                    </p>
+
+                    <!-- Delete form with proper ID -->
+                    <form id="deleteForm" action="/delete/<%= movieId %>" method="POST">
+                        <button type="button" class="btn btn-danger" onclick="openConfirmationModal()">Delete</button>
+                    </form>
+                    <!-- Add delete button here
+                    <button type="button" onclick="openConfirmationModal()" class="btn btn-danger">Delete</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConfirmationModal()">&times;</span>
+            <p style="text-align: center;">Are you sure you want to delete this movie?</p>
+            <button type="button" style="margin: 7px;" onclick="confirmDelete()" class="btn btn-danger">Yes</button>
+            <button type="button" style="margin: 7px;" onclick="closeConfirmationModal()"
+                class="btn btn-secondary">No</button>
+        </div>
+    </div>
+
+    <script>
+        function openConfirmationModal() {
+            document.getElementById('confirmationModal').style.display = 'block';
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
+
+        function confirmDelete() {
+            document.getElementById('deleteForm').submit();
+        }
+    </script>
+</body>

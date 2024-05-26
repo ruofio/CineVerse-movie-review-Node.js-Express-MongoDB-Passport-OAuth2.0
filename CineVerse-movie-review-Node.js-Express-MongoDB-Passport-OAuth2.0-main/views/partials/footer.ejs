@@ -1,0 +1,45 @@
+<div class="container-fluid">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4">
+        <p class="col-md-4 mb-0 text-muted">© 2024 CineVerse, Inc</p>
+
+        <a href="/"
+            class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto text-primary text-decoration-none fw-bold">
+            CineVerse.
+        </a>
+
+        <ul class="nav col-md-4 justify-content-end">
+            <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/FAQs" class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="/about" class="nav-link px-2 text-muted">About</a></li>
+        </ul>
+    </footer>
+    <script>document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.querySelector('input[type="search"]');
+            const details = document.querySelectorAll('details');
+            const searchResults = document.getElementById('searchResults');
+
+            searchInput.addEventListener('input', function (event) {
+                const searchTerm = event.target.value.trim().toLowerCase();
+                let found = false; // Variable to track if any FAQ is found
+
+                details.forEach(detail => {
+                    const summaryText = detail.querySelector('summary').innerText.toLowerCase();
+                    const contentText = detail.querySelector('div').innerText.toLowerCase();
+                    if (summaryText.includes(searchTerm) || contentText.includes(searchTerm)) {
+                        detail.removeAttribute('hidden');
+                        found = true; // FAQ found
+                    } else {
+                        detail.setAttribute('hidden', true);
+                    }
+                });
+
+                if (!found && searchTerm !== '') {
+                    // If no FAQ is found and search term is not empty, display the message
+                    searchResults.textContent = 'No Frequently Asked Question found';
+                } else {
+                    // If FAQ(s) are found or search term is empty, remove any existing message
+                    searchResults.textContent = '';
+                }
+            });
+        });</script>
+</div>
